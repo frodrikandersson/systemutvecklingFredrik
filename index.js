@@ -12,6 +12,8 @@ let connect = async function() {
 
     let database = client.db("fsu24d");
     let products = database.collection("products");
+
+    let result = products.find()
 }
 
 connect();
