@@ -1,0 +1,24 @@
+docker-compose.yml
+    services:
+        mongo:
+            image: mongo:latest
+            restart: no
+            ports: 
+                - 27017:27017
+            volumes:
+                - mongodata:/data/db
+    volumes:
+        mongodata:
+
+
+Ge filen till en ny kollega
+
+I terminalen
+    docker compose up
+
+
+----------------------------------------------
+
+connect to node/mongo database
+I terminalen    
+    node index.js
