@@ -22,3 +22,12 @@ I terminalen
 connect to node/mongo database
 I terminalen    
     node index.js
+
+
+npm install --save-dev nodemon
+    saves to devDependencies instead of dependencies because we only need it while developing
+
+add in "scripts"
+    "dev" : "nodemon"
+we can now use "npm run dev" in terminal
+only use this during development time

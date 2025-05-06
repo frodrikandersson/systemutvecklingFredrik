@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background-color: #ff5a5f;
+    padding: 1rem;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+  
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+  
+.admin-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+  
+.admin-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+  
+.admin-card p {
+    margin: 5px 0;
+}
+  
+.admin-card ul {
+    list-style: none;
+    padding: 0;
+}
+  
+.update-status {
+    margin-top: 10px;
+}
+  
+.update-status select {
+    padding: 5px;
+}
+  
+.update-status-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}
+  
+.update-status-btn:hover {
+    background-color: #45a049;
+}

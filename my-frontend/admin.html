@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="css/stylesAdmin.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="cart.html">Cart</a>
+      <a href="admin.html">Admin Panel</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Admin Panel</h1>
+
+    <section class="admin-section">
+      <h2>Create New Product</h2>
+      <form id="create-product-form">
+        <input type="text" id="new-name" placeholder="Product name" required />
+        <input type="number" id="new-price" placeholder="Price" required />
+        <input type="number" id="new-stock" placeholder="Stock" required />
+         <label for="new-category">Categories:</label>
+         <select id="new-category" multiple required>
+         </select>
+        <input type="text" id="new-image-url" placeholder="Image URL" required />
+        <textarea id="new-description" placeholder="Description" required></textarea>
+        <button type="submit">Create Product</button>
+      </form>
+    </section>
+
+    <section id="product-management">
+      <h2>Product Management</h2>
+      <div id="product-list"></div>
+    </section>
+
+    <section id="order-management" style="margin-top: 3rem;">
+      <h2>Order Management</h2>
+      <div id="order-list"></div>
+    </section>
+  </main>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

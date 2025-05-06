@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="css/stylesCart.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="cart.html">Cart</a>
+      <a href="admin.html">Admin Panel</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Your Cart</h1>
+    <div id="cart-items"></div>
+
+    <section id="user-form-section">
+      <h2>Customer Information</h2>
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+      <button id="check-email">Check Email</button>
+
+      <div id="user-details-form" style="display:none;">
+        <label for="first-name">First Name:</label>
+        <input type="text" id="first-name" placeholder="Enter first name" />
+      
+        <label for="last-name">Last Name:</label>
+        <input type="text" id="last-name" placeholder="Enter last name" />
+      
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter password" />
+      
+        <button id="add-user-btn">Add User</button>
+      </div>
+      
+      <div id="user-form" style="display:none;">
+        <label for="name">Name:</label>
+        <input type="text" id="name" disabled />
+      
+        <label for="street">Street:</label>
+        <input type="text" id="street" />
+      
+        <label for="city">City:</label>
+        <input type="text" id="city" />
+      
+        <label for="state">State:</label>
+        <input type="text" id="state" />
+      
+        <label for="zip">Zip Code:</label>
+        <input type="text" id="zip" />
+      
+        <button id="purchase-btn">Purchase</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/cart.js"></script>
+</body>
+</html>
