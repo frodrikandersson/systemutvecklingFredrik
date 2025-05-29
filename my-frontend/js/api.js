@@ -1,7 +1,7 @@
 const BASE_URL = 'http://localhost:4000/'; // adjust if needed
 
 export async function fetchProducts() {
-  const res = await fetch(`${BASE_URL}/products`);
+  const res = await fetch(`${BASE_URL}/Products`);
   return res.json();
 }
 
@@ -23,7 +23,7 @@ export async function getCart() {
 
 export async function checkout() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  await fetch(`${BASE_URL}/orders`, {
+  await fetch(`${BASE_URL}/Orders`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -42,12 +42,12 @@ export async function checkout() {
 }
 
 export async function fetchOrders() {
-  const res = await fetch(`${BASE_URL}/orders`);
+  const res = await fetch(`${BASE_URL}/Orders`);
   return res.json();
 }
 
 export async function updateProduct(id, data) {
-  await fetch(`${BASE_URL}/products/${id}`, {
+  await fetch(`${BASE_URL}/Products/${id}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)

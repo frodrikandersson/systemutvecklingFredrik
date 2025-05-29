@@ -3,7 +3,7 @@ const orderList = document.getElementById('order-list');
 const API_BASE = 'http://localhost:4000'; 
 
 async function fetchProducts() {
-  const res = await fetch(`${API_BASE}/products`);
+  const res = await fetch(`${API_BASE}/Products`);
   const products = await res.json();
 
   productList.innerHTML = '';
@@ -36,7 +36,7 @@ async function fetchProducts() {
         category: card.querySelector('.category-input').value
       };
 
-      const response = await fetch(`${API_BASE}/products/${product.id}`, {
+      const response = await fetch(`${API_BASE}/Products/${product.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedProduct)
@@ -56,7 +56,7 @@ async function fetchProducts() {
 let categories = [];
 
 async function fetchCategories() {
-  const res = await fetch(`${API_BASE}/categories`);
+  const res = await fetch(`${API_BASE}/Categories`);
   categories = await res.json(); 
 
   const categorySelect = document.getElementById('new-category');
@@ -72,7 +72,7 @@ async function fetchCategories() {
 async function fetchProducts() {
   await fetchCategories(); 
 
-  const res = await fetch(`${API_BASE}/products`);
+  const res = await fetch(`${API_BASE}/Products`);
   const products = await res.json();
 
   productList.innerHTML = ''; 
@@ -121,7 +121,7 @@ async function fetchProducts() {
         categories: categoriesArray
       };
 
-      const response = await fetch(`${API_BASE}/products/${product._id}`, {
+      const response = await fetch(`${API_BASE}/Products/${product._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedProduct)
@@ -139,17 +139,33 @@ async function fetchProducts() {
 }
 
 async function displayOrders() {
-  const res = await fetch(`${API_BASE}/orders`);
+  const res = await fetch(`${API_BASE}/Orders`);
   const orders = await res.json();
 
   orderList.innerHTML = '';
-  orders.forEach(order => {
+  
+  for (const order of orders) {
     const card = document.createElement('div');
     card.className = 'admin-card';
 
-    const productList = order.products.map(p => {
-      return `<li>${p.product_id} (x${p.quantity})</li>`;
-    }).join(''); 
+    let userDisplay = 'Unknown User';
+    try {
+      const userRes = await fetch(`${API_BASE}/Users/${order.user_id}`);
+      const user = await userRes.json();
+      userDisplay = `${user.first_name} ${user.last_name}`;
+    } catch (err) {
+      console.error('Error fetching user:', err);
+    }
+
+    const productList = await Promise.all(order.products.map(async (p) => {
+      try {
+        const productRes = await fetch(`${API_BASE}/Products/${p.product_id}`);
+        const product = await productRes.json();
+        return `<li>${product.name} (x${p.quantity})</li>`;
+      } catch (err) {
+        return `<li>Unknown Product (x${p.quantity})</li>`;
+      }
+    }));
 
     card.innerHTML = `
       <h3>Order ID: ${order._id}</h3>
@@ -160,9 +176,9 @@ async function displayOrders() {
           `).join('')}
         </select>
       </p>
-      <p><strong>User:</strong> ${order.user_id}</p>
+      <p><strong>User:</strong> ${userDisplay}</p>
       <p><strong>Shipping:</strong> ${order.shipping_address?.[0].street}, ${order.shipping_address?.[0].city}</p>
-      <ul>${productList}</ul>
+      <ul>${productList.join('')}</ul>
     `;
 
     const statusDropdown = card.querySelector('.order-status-dropdown');
@@ -171,7 +187,7 @@ async function displayOrders() {
       const newStatus = e.target.value;
 
       try {
-        const response = await fetch(`${API_BASE}/orders/${orderId}`, {
+        const response = await fetch(`${API_BASE}/Orders/${orderId}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status: newStatus })
@@ -189,7 +205,7 @@ async function displayOrders() {
     });
 
     orderList.appendChild(card);
-  });
+  };
 }
 
 const createForm = document.getElementById('create-product-form');
@@ -219,7 +235,7 @@ createForm.addEventListener('submit', async (e) => {
 
   console.log("New Product Data:", newProduct); 
 
-  const response = await fetch(`${API_BASE}/products`, {
+  const response = await fetch(`${API_BASE}/Products`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newProduct)

@@ -1,7 +1,7 @@
 const BASE_URL = 'http://localhost:4000';
 
 async function fetchProducts() {
-  const res = await fetch(`${BASE_URL}/products`);
+  const res = await fetch(`${BASE_URL}/Products`);
   return res.json();
 }
 

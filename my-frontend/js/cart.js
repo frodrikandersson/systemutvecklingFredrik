@@ -5,7 +5,7 @@ const cart = JSON.parse(localStorage.getItem('cart')) || [];
 let userId = null;
 
 async function fetchProducts() {
-  const res = await fetch(`${BASE_URL}/products`);
+  const res = await fetch(`${BASE_URL}/Products`);
   return res.json();
 }
 
@@ -71,7 +71,7 @@ document.getElementById('check-email').addEventListener('click', async () => {
   const email = document.getElementById('email').value;
   if (!email) return alert('Please enter an email.');
 
-  const res = await fetch(`${BASE_URL}/users/email/${email}`);
+  const res = await fetch(`${BASE_URL}/Users/email/${email}`);
   const userForm = document.getElementById('user-form');
   
   if (res.ok) {
@@ -105,7 +105,7 @@ document.getElementById('add-user-btn').addEventListener('click', async () => {
     return alert('Please fill in all required fields.');
   }
 
-  const userRes = await fetch(`${BASE_URL}/users`, {
+  const userRes = await fetch(`${BASE_URL}/Users`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -118,7 +118,7 @@ document.getElementById('add-user-btn').addEventListener('click', async () => {
 
   if (userRes.ok) {
     const userData = await userRes.json();
-    userId = userData._id;
+    userId = userData.id;
 
     document.getElementById('user-details-form').style.display = 'none';
     document.getElementById('user-form').style.display = 'block';
@@ -138,13 +138,39 @@ document.getElementById('purchase-btn').addEventListener('click', async () => {
   const state = document.getElementById('state').value;
   const zip = document.getElementById('zip').value;
 
-  if (!name || !street || !city || !state || !zip) {
+  const email = document.getElementById('email').value;
+
+  if (!email || !name || !street || !city || !state || !zip) {
     return alert('Please fill in all required fields.');
   }
 
 
   if (!userId) {
-    return alert('Please ensure you are logged in or your user is created before proceeding with the purchase.');
+    const [firstName, lastName] = name.split(' ');
+
+    const password = document.getElementById('password').value || 'defaultPassword123';
+    
+    if(!firstName || !lastName || !password) {
+      return alert('Missing required user info. Please fill in name and password.');
+    }
+
+    const userRes = await fetch(`${BASE_URL}/Users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password
+      })
+    });
+
+    if (!userRes.ok) {
+      return alert('Failed to create user.');
+    }
+
+    const userData = await userRes.json();
+    userId = userData._id;
   }
 
   const orderPayload = {
@@ -169,7 +195,7 @@ document.getElementById('purchase-btn').addEventListener('click', async () => {
       zip: zip
   };
 
-  const orderRes = await fetch(`${BASE_URL}/orders`, {
+  const orderRes = await fetch(`${BASE_URL}/Orders`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(orderPayload)
@@ -179,9 +205,7 @@ document.getElementById('purchase-btn').addEventListener('click', async () => {
     return alert('Error placing order');
   }
 
-  console.log(newUserAddressPayload);
-
-  const userRes = await fetch(`${BASE_URL}/users/${userId}/address`, {
+  const userRes = await fetch(`${BASE_URL}/Users/${userId}/address`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newUserAddressPayload)
